@@ -1,39 +1,43 @@
 package com.epam.training.chalamBabu_battula.task1;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
-public class PastebinHomePage {
-    private WebDriver driver;
+public class PastebinHomePage extends BasePage {
 
-    private By codeArea = By.id("postform-text");
-    private By pasteExpiration = By.id("select2-postform-expiration-container");
-    private By expirationOption = By.xpath("//li[text()='10 Minutes']");
-    private By titleField = By.id("postform-name");
-    private By submitButton = By.xpath("//button[text()='Create New Paste']");
+    @FindBy(id = "postform-text")
+    private WebElement codeTextArea;
+
+    @FindBy(id = "select2-postform-expiration-container")
+    private WebElement expirationDropdown;
+
+    @FindBy(xpath = "//li[text()='10 Minutes']")
+    private WebElement tenMinutesOption;
+
+    @FindBy(id = "postform-name")
+    private WebElement pasteNameInput;
 
     public PastebinHomePage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
+        PageFactory.initElements(driver, this);
     }
 
-    public void open() {
-        driver.get("https://pastebin.com/");
+    public void openWebsite() {
+        driver.get("https://pastebin.com");
     }
 
     public void enterCode(String code) {
-        driver.findElement(codeArea).sendKeys(code);
+        enterText(codeTextArea, code);
     }
 
-    public void selectExpiration() {
-        driver.findElement(pasteExpiration).click();
-        driver.findElement(expirationOption).click();
+    public void select10MinutesExpiration() {
+        clickElement(expirationDropdown);
+        clickElement(tenMinutesOption);
     }
 
-    public void enterTitle(String title) {
-        driver.findElement(titleField).sendKeys(title);
-    }
-
-    public void createPaste() {
-        driver.findElement(submitButton).click();
+    public void enterPasteName(String name) {
+        enterText(pasteNameInput,name);
     }
 }
